@@ -1,0 +1,23 @@
+Adult and child pair:
+
+create table familyy 
+(
+person varchar(5),
+type varchar(10),
+age int
+);
+insert into familyy values ('A1','Adult',54)
+,('A2','Adult',53),('A3','Adult',52),('A4','Adult',58),
+('A5','Adult',54),('C1','Child',20),('C2','Child',19),('C3','Child',22),('C4','Child',15);
+
+
+WITH cte as (
+SELECT *
+, CASE WHEN LOWER(type) = 'adult' then CAST(RIGHT(person,1) as INT) END as p
+, CASE WHEN LOWER(type) = 'child' then CAST(RIGHT(person,1) as INT) END as c
+FROM family )
+
+SELECT c1.person as ADULT, c2.person as CHILD
+FROM cte as c1 LEFT JOIN cte as c2
+ON c1.p = c2.c 
+WHERE LOWER(c1.type) = 'adult'
